@@ -3,7 +3,6 @@ package com.example.floatinghub
 import android.app.Activity
 import android.app.PictureInPictureParams
 import android.content.res.Configuration
-import android.graphics.Rect
 import android.os.Build
 import android.os.Bundle
 import android.util.Rational
@@ -15,9 +14,7 @@ import android.widget.Button
 import android.widget.LinearLayout
 
 class PipActivity : Activity() {
- companion object {
-  const val EXTRA_URL = "start_url"
- }
+ companion object { const val EXTRA_URL = "start_url" }
  private lateinit var browser: WebView
  private lateinit var controls: LinearLayout
 
@@ -49,6 +46,10 @@ class PipActivity : Activity() {
    setOnClickListener { browser.loadUrl("https://gemini.google.com") }
   }, LinearLayout.LayoutParams(0, -2, 1f))
   controls.addView(Button(this).apply {
+   text = "Mini window"
+   setOnClickListener { enterMiniWindow() }
+  }, LinearLayout.LayoutParams(0, -2, 1f))
+  controls.addView(Button(this).apply {
    text = "Close"
    setOnClickListener { finish() }
   }, LinearLayout.LayoutParams(0, -2, 1f))
@@ -58,10 +59,14 @@ class PipActivity : Activity() {
   updatePipParams()
  }
 
+ private fun pipParams(): PictureInPictureParams =
+  PictureInPictureParams.Builder()
+   .setAspectRatio(Rational(16, 9))
+   .build()
+
  private fun updatePipParams() {
   if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-   val builder = PictureInPictureParams.Builder()
-    .setAspectRatio(Rational(16, 9))
+   val builder = PictureInPictureParams.Builder().setAspectRatio(Rational(16, 9))
    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
     builder.setAutoEnterEnabled(true)
     builder.setSeamlessResizeEnabled(true)
@@ -70,10 +75,16 @@ class PipActivity : Activity() {
   }
  }
 
+ private fun enterMiniWindow() {
+  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+   enterPictureInPictureMode(pipParams())
+  }
+ }
+
  override fun onUserLeaveHint() {
   super.onUserLeaveHint()
   if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
-   enterPictureInPictureMode(PictureInPictureParams.Builder().setAspectRatio(Rational(16, 9)).build())
+   enterMiniWindow()
   }
  }
 
