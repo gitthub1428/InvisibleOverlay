@@ -4,7 +4,14 @@
  <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE"/>
  <uses-permission android:name="android.permission.INTERNET"/>
  <application android:theme="@android:style/Theme.Material.Light.NoActionBar" android:label="Floating Hub" android:usesCleartextTraffic="true">
-  <activity android:name=".MainActivity" android:exported="true"><intent-filter><action android:name="android.intent.action.MAIN"/><category android:name="android.intent.category.LAUNCHER"/></intent-filter></activity>
+  <activity android:name=".MainActivity" android:exported="true">
+   <intent-filter><action android:name="android.intent.action.MAIN"/><category android:name="android.intent.category.LAUNCHER"/></intent-filter>
+  </activity>
+  <activity android:name=".PipActivity"
+   android:exported="false"
+   android:resizeableActivity="true"
+   android:supportsPictureInPicture="true"
+   android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"/>
   <service android:name=".OverlayService" android:exported="false"/>
  </application>
 </manifest>
