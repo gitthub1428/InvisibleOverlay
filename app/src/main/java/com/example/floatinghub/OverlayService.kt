@@ -16,7 +16,7 @@ class OverlayService: Service() {
  private fun params(w:Int,h:Int)=WindowManager.LayoutParams(w,h,WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN,PixelFormat.TRANSLUCENT)
  private fun showBubble(){
   val b=TextView(this).apply { text="FH"; textSize=18f; setTextColor(0xffffffff.toInt()); setBackgroundColor(0xffb3261e.toInt()); gravity=Gravity.CENTER; setPadding(20,14,20,14) }
-  val p=params(WRAP_CONTENT,WRAP_CONTENT).apply { gravity=Gravity.TOP or Gravity.END; x=32; y=220 }
+  val p=params(WindowManager.LayoutParams.WRAP_CONTENT,WindowManager.LayoutParams.WRAP_CONTENT).apply { gravity=Gravity.TOP or Gravity.END; x=32; y=220 }
   wm.addView(b,p)
   b.setOnTouchListener(object: View.OnTouchListener {
    var sx=0f; var sy=0f; var ox=0; var oy=0
