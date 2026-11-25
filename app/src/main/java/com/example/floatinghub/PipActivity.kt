@@ -53,8 +53,8 @@ class PipActivity : Activity() {
    text = "Close"
    setOnClickListener { finish() }
   }, LinearLayout.LayoutParams(0, -2, 1f))
-  root.addView(controls)
   root.addView(browser, LinearLayout.LayoutParams(-1, 0, 1f))
+  root.addView(controls)
   setContentView(root)
   updatePipParams()
  }
