@@ -1,10 +1,10 @@
-name: Build Android APK
+name: Build and Release APK
 on:
   workflow_dispatch:
   push:
     branches: [main]
 permissions:
-  contents: read
+  contents: write
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -18,12 +18,19 @@ jobs:
         with:
           gradle-version: '8.9'
       - uses: android-actions/setup-android@v3
-      - name: Install Android SDK packages
+      - name: Install SDK packages
         run: sdkmanager "platforms;android-35" "build-tools;35.0.0"
-      - name: Build debug APK
+      - name: Build APK
         run: gradle assembleDebug
-      - uses: actions/upload-artifact@v4
+      - name: Set release version
+        run: echo "VERSION=v1.0.$GITHUB_RUN_NUMBER" >> "$GITHUB_ENV"
+      - name: Create versioned release and attach APK
+        uses: softprops/action-gh-release@v2
         with:
-          name: FloatingHub-debug-apk
-          path: app/build/outputs/apk/debug/*.apk
-          retention-days: 7
+          tag_name: ${{ env.VERSION }}
+          name: Floating Hub ${{ env.VERSION }}
+          body: |
+            Floating Hub APK build.
+            APK is attached below.
+          files: app/build/outputs/apk/debug/app-debug.apk
+          fail_on_unmatched_files: true
